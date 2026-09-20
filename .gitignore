@@ -1,0 +1,5 @@
+/node_modules
+/tools/3d-party/*
+/*/build
+/tmp
+*.bin
