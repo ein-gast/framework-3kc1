@@ -2,6 +2,7 @@
 // Шаблон юнит-тестов фреймворка
 // ============================================================
 
+#include "test.h"
 #include "engine.h"
 #include "fonts.h"
 #include <stdbool.h>
@@ -9,28 +10,9 @@
 #include <string.h>
 
 // Глобальные переменные для отчёта
-static int testsRun = 0;
-static int testsPassed = 0;
-static int testsFailed = 0;
-
-// Макросы для assertion
-#define TEST_ASSERT(cond, msg)                                                 \
-  do {                                                                         \
-    testsRun++;                                                                \
-    if (cond) {                                                                \
-      testsPassed++;                                                           \
-    } else {                                                                   \
-      testsFailed++;                                                           \
-      printf("FAIL: %s (%s) at %s:%d\n", msg, #cond, __FILE__, __LINE__);      \
-    }                                                                          \
-  } while (0)
-
-#define TEST(name) void name(void)
-#define RUN_TEST(name)                                                         \
-  do {                                                                         \
-    printf("TEST: %s\n", #name);                                               \
-    name();                                                                    \
-  } while (0)
+int testsRun = 0;
+int testsPassed = 0;
+int testsFailed = 0;
 
 // Состояние экрана
 static byte canvas[BPP * CANVAS_SZ * CANVAS_SZ];

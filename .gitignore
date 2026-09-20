@@ -4,3 +4,6 @@
 /tmp
 *.bin
 /build.local.*
+/app-*
+!/app-template
+/.gigacode_vsc
