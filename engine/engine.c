@@ -56,49 +56,6 @@ void drawRoundedRect(byte *canvas, int x, int y, int w, int h, bool rounded,
   }
 }
 
-/*
-void putChar(byte *canvas, int x, int y, char c, const col4 *pal) {
-  // Placeholder — реализация зависит от шрифтов игры
-  // Каждая игра определяет свои шрифты в app_assets.c
-  // Этот хелпер переопределяется в app.c при необходимости
-  (void)canvas;
-  (void)x;
-  (void)y;
-  (void)c;
-  (void)pal;
-}
-
-void putStr(byte *canvas, int x, int y, char const *str, byte span,
-            const col4 *pal) {
-  for (uint32_t i = 0; i < 100 && str[i] != 0; i++) {
-    putChar(canvas, x, y, str[i], pal);
-    x += FONT_CHAR_W + span;
-  }
-}
-
-void putNumber(byte *canvas, int x, int y, int n, const col4 *pal) {
-  if (n < 0) {
-    putChar(canvas, x, y, '-', pal);
-    n = -n;
-  }
-  x += FONT_CHAR_W;
-
-  int digits[6] = {0, 0, 0, 0, 0, 0};
-  int count = 0;
-  if (n == 0)
-    count = 1;
-  while (n > 0) {
-    digits[count++] = n % 10;
-    n /= 10;
-  }
-
-  for (int i = count - 1; i >= 0; i--) {
-    putChar(canvas, x, y, digits[i] + '0', pal);
-    x += FONT_CHAR_W;
-  }
-}
-*/
-
 // ============================================================
 // Генератор случайных чисел (LCG)
 // ============================================================

@@ -3,6 +3,7 @@
 # Определяем директорию фреймворка для корректных путей
 FRAMEWORK_DIR="$(cd "$(dirname "$0")" && pwd)"
 . "$FRAMEWORK_DIR/build.env" || exit 1
+test -f "$FRAMEWORK_DIR/build.local.env" && . "$FRAMEWORK_DIR/build.local.env"
 
 FRAMEWORK_TMP="$FRAMEWORK_DIR"/tmp
 

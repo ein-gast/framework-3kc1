@@ -4,6 +4,7 @@ echo "== Готовим фреймворк к разработке =="
 
 FRAMEWORK_DIR="$(cd "$(dirname "$0")" && pwd)"
 . "$FRAMEWORK_DIR/build.env" || exit 1
+test -f "$FRAMEWORK_DIR/build.local.env" && . "$FRAMEWORK_DIR/build.local.env"
 
 echo "Проверяем наличие необходимых утилит"
 
