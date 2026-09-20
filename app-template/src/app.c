@@ -1,6 +1,7 @@
 #include "app.h"
 #include "assets.h"
 #include "engine.h"
+#include "fonts.h"
 #include <stdint.h>
 
 gameState state;
@@ -9,6 +10,7 @@ gameState state;
 void I() {
   state.holding = false;
   state.timeMs = 0L;
+  setFont(fontD1Raster, FONT_D1_W, FONT_D1_H);
 }
 
 // --- exported K() = keyInput() ---
@@ -27,9 +29,13 @@ void P() {
 }
 
 // --- exported R() = renderFrame() ---
-void R(byte *canvas) {  
+void R(byte *canvas) {
   // очистка экрана
   drawRoundedRect(canvas, 0, 0, CANVAS_SZ, CANVAS_SZ, false, &colBg);
+
+  // отображение текущей секунды слева сверху
+  int seconds = state.timeMs / 1000;
+  putNumber(canvas, FONT_D1_H, FONT_D1_H, seconds, &colMain);
 
   // отрисовка растра
   const col4 *activeColor;
