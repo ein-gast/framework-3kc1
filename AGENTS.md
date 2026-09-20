@@ -28,6 +28,30 @@ Instructions are organized by context. Agents read instructions from the directo
 | `engine/`, `tools/`, build scripts | `engine/AGENTS.md` | Framework development |
 | `app-template/`, `app-*` directories | `app-template/AGENTS.md` | App development |
 
+## TDD Workflow (RECOMMENDED)
+
+**Write tests BEFORE implementation.** This is the preferred development methodology:
+
+1. **Plan** — create a test plan listing all scenarios
+2. **Write tests first** — implement test functions that describe expected behavior
+3. **Run tests** — they will fail (expected, this is "red")
+4. **Implement** — write minimal code to make tests pass ("green")
+5. **Refactor** — clean up code, keep tests passing
+
+### Test naming convention
+
+- **ALL tests** (main function): `test_app.c` or `test_framework.c` — one file per app
+- **Unit tests** (component tests): `test_*.c` — one file per feature group
+
+### Key principles
+
+- **Tests are specifications** — they define what the code should do
+- **Each test does one thing** — single responsibility, easy to debug
+- **Failures are expected** — a failing test means you need to implement something
+- **Run after every change** — `./run_tests.sh`
+- **Cover edge cases** — boundaries, null states, extreme values
+- **E2E tests catch integration bugs** — unit tests alone miss state-machine interactions
+
 ## General Conventions
 
 - **C:** C23, clang, no external libraries
@@ -47,3 +71,11 @@ Instructions are organized by context. Agents read instructions from the directo
 - gzip, base64
 
 Verify: `./fwinstall.sh`
+
+## Debugging Tools
+
+For debugging and investigation, use **coreutils** utilities (`cat`, `grep`, `awk`, `sed`, `head`, `tail`, `wc`, `sort`, `uniq`, `diff`, `xxd`, `od`, `hexdump`, `base64`, `gzip`, `bc`, `seq`, `yes`, `printf`, `env`, `test`, `expr`, `tr`, `cut`, `paste`, `join`, `comm`, `split`, `tee`, `timeout`, `stdbuf`, `shuf`, `od`, `xxd`).
+
+**Do NOT use Python.** If you need a script, write it in:
+- **C** — compile with `clang`, run the binary
+- **Node.js** — without any external modules (only built-in `fs`, `path`, `crypto`, etc.)

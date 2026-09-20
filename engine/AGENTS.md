@@ -69,12 +69,27 @@ Key scripts:
 
 Build config: `build.env` — set `APP_SRC`, `APP_BUILD`, `APP_FPS`, `CLANG`
 
-## Testing Framework Changes
+## TDD Workflow (RECOMMENDED)
 
-1. Copy `engine_tests/test_framework.c` to test new engine features
-2. Run `./run_tests.sh` with `FW_TEST_FRAMEWORK=yes` in `build.env`
-3. Tests compile as native x86-64 binary (not WASM)
-4. Use `TEST_ASSERT(cond, "message")` for assertions
+**Write tests BEFORE implementation.** This is the preferred development methodology:
+
+1. **Write tests first** — implement test functions that describe expected behavior
+2. **Run tests** — they will fail (expected, this is "red")
+3. **Implement** — write minimal code to make tests pass ("green")
+4. **Refactor** — clean up code, keep tests passing
+
+### Key principles
+
+- **Tests are specifications** — they define what the code should do
+- **Each test does one thing** — single responsibility, easy to debug
+- **Failures are expected** — a failing test means you need to implement something
+- **Run after every change** — `./run_tests.sh`
+- **Cover edge cases** — boundaries, null states, extreme values
+
+### Test naming convention
+
+- **ALL tests** (main function): `test_framework.c` — one file per app
+- **Unit tests** (component tests): `test_*.c` — one file per feature group
 
 ## Constraints
 
@@ -86,3 +101,11 @@ Build config: `build.env` — set `APP_SRC`, `APP_BUILD`, `APP_FPS`, `CLANG`
 - **CANVAS_SZ is compile-time constant** — don't assume specific size
 - **FPS is compile-time constant** — don't assume specific frame rate
 - **Do not** modify documentation files without direct request
+
+## Debugging Tools
+
+For debugging and investigation, use **coreutils** utilities (`cat`, `grep`, `awk`, `sed`, `head`, `tail`, `wc`, `sort`, `uniq`, `diff`, `xxd`, `od`, `hexdump`, `base64`, `gzip`, `bc`, `seq`, `yes`, `printf`, `env`, `test`, `expr`, `tr`, `cut`, `paste`, `join`, `comm`, `split`, `tee`, `timeout`, `stdbuf`, `shuf`, `od`, `xxd`).
+
+**Do NOT use Python.** If you need a script, write it in:
+- **C** — compile with `clang`, run the binary
+- **Node.js** — without any external modules (only built-in `fs`, `path`, `crypto`, etc.)

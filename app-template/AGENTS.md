@@ -129,13 +129,50 @@ value = value * 3;
 
 Keep in mind that `FIXED_SCALE` constant can be redefined.
 
+## TDD Workflow (RECOMMENDED)
+
+**Write tests BEFORE implementation.** This is the preferred development methodology:
+
+1. **Plan** — create a test plan in `.gigacode_vsc/plans/` listing all scenarios
+2. **Write tests first** — implement test functions that describe expected behavior
+3. **Run tests** — they will fail (expected, this is "red")
+4. **Implement** — write minimal code to make tests pass ("green")
+5. **Refactor** — clean up code, keep tests passing
+
+### Test naming convention
+
+- **ALL tests** (main function): `test_app.c` — one file per app
+- **Unit tests** (component tests): `test_*.c` — one file per feature group
+- **E2E tests** (complex game-specific scenarios): `e2e_*.c` — one file per scenario, for example:
+  - `e2e_movement.c` — movement
+  - `e2e_prize_pickup.c` — pickup a prize
+  - `e2e_gamover.c` — gamover conditions
+
+### Example TDD cycle
+
+ 1. Write the test (describes expected behavior)
+ 2. Run: FAILS (red)
+ 3. Implement feature
+ 4. Run: PASSES (green)
+
+### Key principles
+
+- **Tests are specifications** — they define what the code should do
+- **Each test does one thing** — single responsibility, easy to debug
+- **Failures are expected** — a failing test means you need to implement something
+- **Run after every change** — `./run_tests.sh`
+- **Cover edge cases** — boundaries, null states, extreme values
+- **E2E tests catch integration bugs** — unit tests alone miss state-machine interactions
+
 ## Testing
 
 ### Unit Tests
 
-Write tests in `app-template/tests/test_app.c`:
+Write tests in `app-template/tests/test_*.c`:
 
 ```c
+// test_app.c
+
 TEST(test_name) {
     I();                    // Initialize
     state.score = 100;      // Arrange
@@ -183,3 +220,11 @@ Configuration in `build.env`:
 - **CANVAS_SZ is compile-time constant** — don't assume specific size
 - **FPS is compile-time constant** — don't assume specific frame rate
 - **C23 only** — use `#embed` for resource embedding (clang 20+)
+
+## Debugging Tools
+
+For debugging and investigation, use **coreutils** utilities (`cat`, `grep`, `awk`, `sed`, `head`, `tail`, `wc`, `sort`, `uniq`, `diff`, `xxd`, `od`, `hexdump`, `base64`, `gzip`, `bc`, `seq`, `yes`, `printf`, `env`, `test`, `expr`, `tr`, `cut`, `paste`, `join`, `comm`, `split`, `tee`, `timeout`, `stdbuf`, `shuf`, `od`, `xxd`).
+
+**Do NOT use Python.** If you need a script, write it in:
+- **C** — compile with `clang`, run the binary
+- **Node.js** — without any external modules (only built-in `fs`, `path`, `crypto`, etc.)
