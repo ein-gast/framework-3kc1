@@ -127,10 +127,10 @@ void putNumber(byte *canvas, int x, int y, int n, const col4 *pal);
 // ============================================================
 
 // LCG RNG (0-32767)
-uint32_t simpleRng(void);
+uint16_t simpleRng(void);
 
 // LCG RNG в диапазоне [0, max)
-uint32_t simpleRngRange(uint32_t max);
+uint16_t simpleRngRange(uint16_t max);
 
 // Инициализация RNG с seed
 void simpleRngSeed(uint32_t seed);

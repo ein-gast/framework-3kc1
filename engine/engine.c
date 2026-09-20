@@ -107,9 +107,9 @@ static uint32_t _simpleRngState = 810101;
 
 void simpleRngSeed(uint32_t seed) { _simpleRngState = seed; }
 
-uint32_t simpleRng(void) {
+uint16_t simpleRng(void) {
   _simpleRngState = _simpleRngState * 1103515245u + 12345u;
-  return (_simpleRngState >> 16) & 0x7fff;
+  return (uint16_t)((_simpleRngState >> 16) & 0x7fff);
 }
 
-uint32_t simpleRngRange(uint32_t max) { return simpleRng() % max; }
+uint16_t simpleRngRange(uint16_t max) { return simpleRng() % max; }

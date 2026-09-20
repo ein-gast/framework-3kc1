@@ -72,6 +72,95 @@ TEST(test_draw_pixel4) {
 }
 
 // ============================================================
+// Тесты ГСЧ (LCG)
+// ============================================================
+
+TEST(test_rng_seeded_sequence) {
+  // Один и тот же seed → одинаковая последовательность
+  simpleRngSeed(42);
+  uint32_t a0 = simpleRng();
+  uint32_t a1 = simpleRng();
+  uint32_t a2 = simpleRng();
+
+  simpleRngSeed(42);
+  uint32_t b0 = simpleRng();
+  uint32_t b1 = simpleRng();
+  uint32_t b2 = simpleRng();
+
+  TEST_ASSERT(a0 == b0, "seed(42) → первое значение совпадает");
+  TEST_ASSERT(a1 == b1, "seed(42) → второе значение совпадает");
+  TEST_ASSERT(a2 == b2, "seed(42) → третье значение совпадает");
+}
+
+TEST(test_rng_range_0_32767) {
+  // simpleRng возвращает [0, 32767] (15 бит)
+  for (int i = 0; i < 1000; i++) {
+    uint32_t v = simpleRng();
+    TEST_ASSERT(v <= 32767, "значение в диапазоне [0, 32767]");
+  }
+}
+
+TEST(test_rng_different_seeds_different_values) {
+  simpleRngSeed(1);
+  uint32_t a = simpleRng();
+
+  simpleRngSeed(2);
+  uint32_t b = simpleRng();
+
+  TEST_ASSERT(a != b, "разные seed дают разные значения");
+}
+
+TEST(test_rng_range_function) {
+  simpleRngSeed(123);
+  for (int i = 0; i < 500; i++) {
+    uint32_t v = simpleRngRange(10);
+    TEST_ASSERT(v < 10, "simpleRngRange(10) < 10");
+    TEST_ASSERT(v >= 0, "simpleRngRange(10) >= 0");
+  }
+}
+
+TEST(test_rng_range_max_1) {
+  // max=1 → всегда 0
+  simpleRngSeed(999);
+  for (int i = 0; i < 100; i++) {
+    uint32_t v = simpleRngRange(1);
+    TEST_ASSERT(v == 0, "simpleRngRange(1) == 0");
+  }
+}
+
+TEST(test_rng_range_max_2) {
+  // max=2 → только 0 или 1
+  simpleRngSeed(777);
+  for (int i = 0; i < 200; i++) {
+    uint32_t v = simpleRngRange(2);
+    TEST_ASSERT(v == 0 || v == 1, "simpleRngRange(2) ∈ {0, 1}");
+  }
+}
+
+TEST(test_rng_seed_reset_midstream) {
+  simpleRngSeed(100);
+  uint32_t x = simpleRng(); // 1-й
+  uint32_t y = simpleRng(); // 2-й
+
+  simpleRngSeed(100);
+  uint32_t x2 = simpleRng(); // должен совпасть с x
+
+  TEST_ASSERT(x == x2, "seed сбросил → первое значение совпало");
+  TEST_ASSERT(y != x2, "второе значение из первой серии ≠ из второй");
+}
+
+TEST(test_rng_various_seeds) {
+  // Проверка, что разные seed дают разные результаты
+  uint32_t prev = 0;
+  for (uint32_t s = 1; s <= 20; s++) {
+    simpleRngSeed(s);
+    uint32_t v = simpleRng();
+    TEST_ASSERT(v != prev, "разные seed дают разные значения");
+    prev = v;
+  }
+}
+
+// ============================================================
 // Запуск тестов
 // ============================================================
 
@@ -79,6 +168,16 @@ int main(void) {
   printf("=== %s framework unit tests ===\n\n", "game");
 
   RUN_TEST(test_draw_pixel4);
+
+  // RNG
+  RUN_TEST(test_rng_seeded_sequence);
+  RUN_TEST(test_rng_range_0_32767);
+  RUN_TEST(test_rng_different_seeds_different_values);
+  RUN_TEST(test_rng_range_function);
+  RUN_TEST(test_rng_range_max_1);
+  RUN_TEST(test_rng_range_max_2);
+  RUN_TEST(test_rng_seed_reset_midstream);
+  RUN_TEST(test_rng_various_seeds);
 
   printf("\n=== Results ===\n");
   printf("Run: %d\n", testsRun);
